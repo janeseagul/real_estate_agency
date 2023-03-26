@@ -2,6 +2,7 @@ from django.contrib import admin
 
 from .models import Flat
 
+
 class ModelAdmin(admin.ModelAdmin):
     search_fields = ('town', 'address', 'owner')
     readonly_fields = ['created_at']
@@ -13,5 +14,11 @@ class ModelAdmin(admin.ModelAdmin):
         'town'
     )
     list_editable = ['new_building']
+    list_filter = (
+        'new_building',
+        'rooms_number',
+        'has_balcony'
+    )
+
 
 admin.site.register(Flat, ModelAdmin)
