@@ -1,9 +1,10 @@
 from django.contrib import admin
 
-from .models import Flat
+from .models import Flat, Complaint
 
 
-class ModelAdmin(admin.ModelAdmin):
+@admin.register(Flat)
+class FlatAdmin(admin.ModelAdmin):
     search_fields = ('town', 'address', 'owner')
     readonly_fields = ['created_at']
     list_display = (
@@ -21,4 +22,6 @@ class ModelAdmin(admin.ModelAdmin):
     )
 
 
-admin.site.register(Flat, ModelAdmin)
+@admin.register(Complaint)
+class ComplaintAdmin(admin.ModelAdmin):
+    raw_id_fields = ('author', 'flat',)
