@@ -20,8 +20,9 @@ class FlatAdmin(admin.ModelAdmin):
         'rooms_number',
         'has_balcony'
     )
-
+    raw_id_fields = ('liked_by',)
 
 @admin.register(Complaint)
 class ComplaintAdmin(admin.ModelAdmin):
-    raw_id_fields = ('author', 'flat',)
+    raw_id_fields = ('flat',)
+
