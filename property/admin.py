@@ -12,7 +12,9 @@ class FlatAdmin(admin.ModelAdmin):
         'price',
         'new_building',
         'construction_year',
-        'town'
+        'town',
+        'owners_phonenumber',
+        'owner_pure_phone'
     )
     list_editable = ['new_building']
     list_filter = (
@@ -22,7 +24,7 @@ class FlatAdmin(admin.ModelAdmin):
     )
     raw_id_fields = ('liked_by',)
 
+
 @admin.register(Complaint)
 class ComplaintAdmin(admin.ModelAdmin):
     raw_id_fields = ('flat',)
-
