@@ -63,8 +63,6 @@ class Flat(models.Model):
         related_name='liked_flats',
         verbose_name='Кто лайкнул')
 
-
-
     def __str__(self):
         return f'{self.town}, {self.address} ({self.price}р.)'
 
@@ -73,16 +71,29 @@ class Complaint(models.Model):
     user = models.ForeignKey(
         User,
         verbose_name='Автор жалобы',
-        on_delete=models.CASCADE
-    )
+        on_delete=models.CASCADE)
     flat = models.ForeignKey(
         Flat,
         verbose_name='Квартира, на которую пожаловались',
-        on_delete=models.CASCADE
-    )
+        on_delete=models.CASCADE)
     content = models.TextField('Жалоба')
-
-
 
     def __str__(self):
         return f'{self.flat.address}, {self.user}'
+
+
+class Owner(models.Model):
+    fullname = models.CharField('ФИО владельца', max_length=200)
+    owners_phonenumber = models.CharField('Номер владельца', max_length=20)
+    owner_pure_phone = PhoneNumberField(
+        'Нормализованный номер владельца',
+        null=True, blank=True,
+        db_index=True)
+    flat = models.ManyToManyField(
+        Flat,
+        related_name='owners',
+        verbose_name='Квартиры в собственности'
+    )
+
+    def __str__(self):
+        return f'{self.flat}'
