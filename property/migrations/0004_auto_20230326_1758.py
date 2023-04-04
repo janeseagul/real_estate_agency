@@ -3,16 +3,17 @@
 from django.db import migrations
 
 
+def define_new_buildings(apps, schema_editor):
+    Flat = apps.get_model('property', 'Flat')
+    for flat in Flat.objects.all().iterator():
+        Flat.objects.filter(construction_year__gte=2015).update(new_building=True)
+        Flat.objects.filter(construction_year__lt=2015).update(new_building=False)
+
 class Migration(migrations.Migration):
 
     dependencies = [
         ('property', '0003_flat_new_building'),
     ]
-    def define_new_buildings(apps, schema_editor):
-        Flat = apps.get_model('property', 'Flat')
-        for flat in Flat.objects.all().iterator():
-            flat.new_building = flat.construction_year >= 2015
-            flat.save()
 
     operations = [
         migrations.RunPython(define_new_buildings)
