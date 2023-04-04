@@ -3,20 +3,21 @@
 from django.db import migrations
 
 
+def migrate_flats(apps, schema_editor):
+    Flat = apps.get_model('property', 'Flat')
+    Owner = apps.get_model('property', 'Owner')
+    for flat in Flat.objects.all().iterator():
+        owner_deprecated = flat.owner
+        owner = Owner.objects.filter(flat_owner=owner_deprecated).first()
+        owner.flat.add(flat)
+        owner.save()
+
+
 class Migration(migrations.Migration):
 
     dependencies = [
         ('property', '0020_auto_20230403_1834'),
     ]
-
-    def migrate_flats(apps, schema_editor):
-        Flat = apps.get_model('property', 'Flat')
-        Owner = apps.get_model('property', 'Owner')
-        for flat in Flat.objects.all().iterator():
-            owner_deprecated = flat.owner
-            owner = Owner.objects.filter(flat_owner=owner_deprecated).first()
-            owner.flat.add(flat)
-            owner.save()
 
     operations = [
         migrations.RunPython(migrate_flats)
